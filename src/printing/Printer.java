@@ -1,8 +1,10 @@
 package printing;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class Printer<T> implements IMachine 
 {
@@ -10,7 +12,8 @@ public class Printer<T> implements IMachine
 	private PaperTray paperTray = new PaperTray();
 	private Machine machine;
 	private T cartridge;
-	private List<Page> pages = new ArrayList<Page>();
+//	private List<Page> pages = new ArrayList<Page>();
+	private Map<Integer, Page> pagesMap = new HashMap<Integer, Page>();
 	
 	public Printer(boolean isOn, String modelNumber, T cartridge)
 	{
@@ -36,22 +39,25 @@ public class Printer<T> implements IMachine
 	
 	public void print(int copies)
 	{
-		
 		CheckCopies(copies);
 		
 		String onStatus = "";
-		if(machine.isOn())
+		if(machine.isOn()){
 			onStatus = " is On!";
-		else
+		}
+		else{
 			onStatus = " is Off!";
+		}
+		int pageNumber = 1;
 		
 		String textToPrint = modelNumber + onStatus;
 						
 		while( copies > 0 && !paperTray.isEmpty() )
 		{
-			
-			pages.add(new Page(textToPrint));
+//			pages.add(new Page(textToPrint));
+			pagesMap.put(pageNumber, new Page(textToPrint + ":" + pageNumber));
 			copies--;
+			pageNumber++;
 			paperTray.usePage();
 		}
 		
@@ -59,12 +65,16 @@ public class Printer<T> implements IMachine
 			System.out.println("Load more paper!");
 	}
 	
-	public void outputPages() {
-		for (Page p : pages) {
-			System.out.println(p.getText());
-		}
-	}
+//	public void outputPages() {
+//		for (Page p : pages) {
+//			System.out.println(p.getText());
+//		}
+//	}
 
+	public void outputPage(int pageNumber) {
+		System.out.println(pagesMap.get(pageNumber).getText());
+	}
+	
 	private void CheckCopies(int copies) {
 		if (copies <0){
 			throw new IllegalArgumentException("Can't print less than 0 copies");
