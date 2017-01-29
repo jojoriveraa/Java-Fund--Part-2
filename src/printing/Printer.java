@@ -1,11 +1,16 @@
 package printing;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 public class Printer<T> implements IMachine 
 {
 	private String modelNumber;
 	private PaperTray paperTray = new PaperTray();
 	private Machine machine;
 	private T cartridge;
+	private List<Page> pages = new ArrayList<Page>();
 	
 	public Printer(boolean isOn, String modelNumber, T cartridge)
 	{
@@ -44,13 +49,20 @@ public class Printer<T> implements IMachine
 						
 		while( copies > 0 && !paperTray.isEmpty() )
 		{
-			System.out.println(textToPrint);
+			
+			pages.add(new Page(textToPrint));
 			copies--;
 			paperTray.usePage();
 		}
 		
 		if(paperTray.isEmpty())
 			System.out.println("Load more paper!");
+	}
+	
+	public void outputPages() {
+		for (Page p : pages) {
+			System.out.println(p.getText());
+		}
 	}
 
 	private void CheckCopies(int copies) {
