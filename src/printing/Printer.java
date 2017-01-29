@@ -31,7 +31,8 @@ public class Printer<T> implements IMachine
 	
 	public void print(int copies)
 	{
-		//System.out.println(cartridge.getFillPercentage());
+		
+		CheckCopies(copies);
 		
 		String onStatus = "";
 		if(machine.isOn())
@@ -50,6 +51,12 @@ public class Printer<T> implements IMachine
 		
 		if(paperTray.isEmpty())
 			System.out.println("Load more paper!");
+	}
+
+	private void CheckCopies(int copies) {
+		if (copies <0){
+			throw new IllegalArgumentException("Can't print less than 0 copies");
+		}
 	}
 	
 	public void printColors()
@@ -89,6 +96,7 @@ public class Printer<T> implements IMachine
 	@Override
 	public void TurnOff() {
 		machine.TurnOff();
+		System.out.println("Machine is off");
 	}
 
 	@Override
