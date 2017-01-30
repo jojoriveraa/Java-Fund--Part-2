@@ -1,18 +1,14 @@
 package printing;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
-public class Printer<T> implements IMachine 
+public class Printer<T extends ICartridge> implements IMachine 
 {
 	private String modelNumber;
 	private PaperTray paperTray = new PaperTray();
 	private Machine machine;
 	private T cartridge;
-//	private List<Page> pages = new ArrayList<Page>();
 	private Map<Integer, Page> pagesMap = new HashMap<Integer, Page>();
 	
 	public Printer(boolean isOn, String modelNumber, T cartridge)
@@ -54,7 +50,6 @@ public class Printer<T> implements IMachine
 						
 		while( copies > 0 && !paperTray.isEmpty() )
 		{
-//			pages.add(new Page(textToPrint));
 			pagesMap.put(pageNumber, new Page(textToPrint + ":" + pageNumber));
 			copies--;
 			pageNumber++;
@@ -65,11 +60,6 @@ public class Printer<T> implements IMachine
 			System.out.println("Load more paper!");
 	}
 	
-//	public void outputPages() {
-//		for (Page p : pages) {
-//			System.out.println(p.getText());
-//		}
-//	}
 
 	public void outputPage(int pageNumber) {
 		System.out.println(pagesMap.get(pageNumber).getText());
@@ -93,11 +83,6 @@ public class Printer<T> implements IMachine
 			System.out.println(currentColor);
 		}
 		
-	}
-	
-	private void print(String text)
-	{
-		System.out.println(text);
 	}
 	
 	public String getModelNumber()

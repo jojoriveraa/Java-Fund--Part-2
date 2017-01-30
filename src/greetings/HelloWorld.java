@@ -1,55 +1,30 @@
 package greetings;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
-import java.util.Set;
-
-import printing.BWCartridge;
+import printing.ColorCartridge;
 import printing.Printer;
 
 public class HelloWorld {
 
 	public static void main(String[] args) {
 
-		Printer<BWCartridge> printer = new Printer<BWCartridge>(true, "MY PRINTER", new BWCartridge());
+		Printer<ColorCartridge> printer = new Printer<ColorCartridge>(true, "MY PRINTER", ColorCartridge.GREEN);
 
-		Map<String, List<Integer>> testScores = new HashMap<String, List<Integer>>();
+		switch (printer.getCartridge()) {
+		case BLUE:
+			System.out.println("Blue");
+			break;
+		case GREEN:
+			System.out.println("Green");
+			break;
 
-		List<Integer> jorgeScores = new ArrayList<Integer>();
-		jorgeScores.add(80);
-		jorgeScores.add(100);
-		jorgeScores.add(50);
-		jorgeScores.add(70);
-		
-		List<Integer> joeScores = new ArrayList<Integer>();
-		joeScores.add(10);
-		joeScores.add(20);
-		joeScores.add(30);
-		joeScores.add(100);
-		
-		List<Integer> alexScores = new ArrayList<Integer>();
-		alexScores.add(100);
-		alexScores.add(90);
-		alexScores.add(30);
-		alexScores.add(0);
+		case RED:
+			System.out.println("Red");
+			break;
 
-		testScores.put("Jorge", jorgeScores);
-		testScores.put("Joe", joeScores);
-		testScores.put("Alex", alexScores);
-		
-		printScores("Jorge", testScores);
+		default:
+			break;
+		}
 
 	}
-	
-	public static void printScores(String studentName, Map<String, List<Integer>> scoresMap) {
-				List<Integer> scores = scoresMap.get(studentName);
-				for (int score : scores){
-					System.out.println(score);
-				}
-	}
+
 }
