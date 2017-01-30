@@ -13,12 +13,17 @@ public class HelloWorld {
 		case BLUE:
 			System.out.println("Blue");
 			break;
+			
 		case GREEN:
 			System.out.println("Green");
 			break;
 
 		case RED:
 			System.out.println("Red");
+			break;
+
+		case YELLOW:
+			System.out.println("Yellow");
 			break;
 
 		default:
