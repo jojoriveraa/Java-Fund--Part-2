@@ -6,30 +6,10 @@ import printing.Printer;
 public class HelloWorld {
 
 	public static void main(String[] args) {
-
-		Printer<ColorCartridge> printer = new Printer<ColorCartridge>(true, "MY PRINTER", ColorCartridge.GREEN);
-
-		switch (printer.getCartridge()) {
-		case BLUE:
-			System.out.println("Blue");
-			break;
-			
-		case GREEN:
-			System.out.println("Green");
-			break;
-
-		case RED:
-			System.out.println("Red");
-			break;
-
-		case YELLOW:
-			System.out.println("Yellow");
-			break;
-
-		default:
-			break;
-		}
-
+		Printer<ColorCartridge> printer = new Printer<ColorCartridge>(true, "MY PRINTER", ColorCartridge.RED);
+		printer.loadPaper(5);
+		printer.print(3);
+		printer.outputPage(2);
 	}
 
 }
