@@ -1,104 +1,141 @@
 package printing;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Printer<T extends ICartridge> implements IMachine 
-{
+public class Printer<T extends ICartridge> implements IMachine {
 	private String modelNumber;
 	private PaperTray paperTray = new PaperTray();
 	private Machine machine;
 	private T cartridge;
 	private Map<Integer, Page> pagesMap = new HashMap<Integer, Page>();
-	
-	public Printer(boolean isOn, String modelNumber, T cartridge)
-	{
+
+	public Printer(boolean isOn, String modelNumber, T cartridge) {
 		machine = new Machine(isOn);
 		this.modelNumber = modelNumber;
 		this.cartridge = cartridge;
 	}
-	
+
 	@Override
-	public void TurnOn()
-	{
+	public void TurnOn() {
 		System.out.println("Warming up printer");
 		machine.TurnOn();
 	}
-	
-	public <U extends ICartridge> void printUsingCartridge(U cartridge, String message)
-	{
+
+	public <U extends ICartridge> void printUsingCartridge(U cartridge, String message) {
 		System.out.println(cartridge.toString());
 		System.out.println(message);
 		System.out.println(cartridge.toString());
 	}
-	
-	
-	public void print(int copies)
-	{
+
+	public void print(int copies) {
 		CheckCopies(copies);
-		
+
 		String onStatus = "";
-		if(machine.isOn()){
+
+		if (machine.isOn()) {
 			onStatus = " is On!";
-		}
-		else{
+		} else {
 			onStatus = " is Off!";
 		}
+
+		String textToPrint = getTextFromFile();
 		int pageNumber = 1;
-		
-		String textToPrint = modelNumber + onStatus;
-		textToPrint += "|||" + cartridge.printColor() + "|||";
-		
-		
-		while( copies > 0 && !paperTray.isEmpty() )
-		{
+
+		while (copies > 0 && !paperTray.isEmpty()) {
 			pagesMap.put(pageNumber, new Page(textToPrint + ":" + pageNumber));
 			copies--;
 			pageNumber++;
 			paperTray.usePage();
 		}
-		
-		if(paperTray.isEmpty())
+
+		if (paperTray.isEmpty())
 			System.out.println("Load more paper!");
 	}
-	
+
+	private String getTextFromFile() {
+		FileReader reader = null;
+		String allText = "";
+		BufferedReader br;
+
+		try {
+			reader = new FileReader("res\\text.txt");
+			br = new BufferedReader(reader);
+
+			String line;
+			while ((line = br.readLine()) != null) {
+				allText += line + "\n";
+			}
+
+			return allText;
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (reader != null) {
+				try {
+					reader.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+		return "";
+	}
 
 	public void outputPage(int pageNumber) {
-		System.out.println(pagesMap.get(pageNumber).getText());
+		
+		PrintWriter writer = null;
+
+		try {
+			writer = new PrintWriter(new FileWriter("res\\outputpage.txt"));
+			writer.println(pagesMap.get(pageNumber).getText());
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (writer != null) {
+				writer.close();
+			}
+		}
+
 	}
-	
+
 	private void CheckCopies(int copies) {
-		if (copies <0){
+		if (copies < 0) {
 			throw new IllegalArgumentException("Can't print less than 0 copies");
 		}
 	}
-	
-	public void printColors()
-	{
+
+	public void printColors() {
 		String[] colors = new String[] { "Red", "Blue", "Green", "Yellow", "Orange" };
-		
-		for( String currentColor : colors )
-		{
-			if("Green".equals(currentColor))
+
+		for (String currentColor : colors) {
+			if ("Green".equals(currentColor))
 				continue;
-			
+
 			System.out.println(currentColor);
 		}
-		
+
 	}
-	
-	public String getModelNumber()
-	{
+
+	public String getModelNumber() {
 		return modelNumber;
 	}
-	
-	public T getCartridge()
-	{
+
+	public T getCartridge() {
 		return cartridge;
 	}
 
-	public void loadPaper(int count) 
-	{
+	public void loadPaper(int count) {
 		paperTray.addPaper(count);
 	}
 
