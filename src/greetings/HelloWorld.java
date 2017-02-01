@@ -1,27 +1,31 @@
 package greetings;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-import printing.ColorCartridge;
-import printing.Printer;
-import printing.PrintingDevice;
+import printing.ContinuousPrinter;
 
 public class HelloWorld {
 
-	public static void main(String[] args) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		Printer<ColorCartridge> printer = new Printer<ColorCartridge>(true, "MY PRINTER", ColorCartridge.RED);
-
-		printer.loadPaper(10);
+	public static void main(String[] args){
 		
-		PrintingDevice annotation = printer.getClass().getAnnotation(PrintingDevice.class);
+		ContinuousPrinter cp = new ContinuousPrinter();
+//		Thread thread = new Thread(cp);
+//		thread.start();
 		
-		Method printMethod = printer.getClass().getMethod(annotation.defaultPrintMethod(), int.class);
-				
-		printMethod.invoke(printer, annotation.defaultNumberOfCoppies());
+		ExecutorService executor = Executors.newFixedThreadPool(10);
+		executor.submit(cp);
+		executor.submit(cp);
+		executor.submit(cp);
+		executor.submit(cp);
+		executor.submit(cp);
+		executor.submit(cp);
+		executor.shutdown();
 		
-		printer.outputPage(5);
-				
+		
+		for (int i = 0; i < 100; i++){
+			System.out.println("Main thread" + i);
+		}
 	}
 
 }
