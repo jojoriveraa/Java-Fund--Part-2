@@ -35,7 +35,6 @@ public class Printer<T extends ICartridge> implements IMachine {
 	}
 
 	public void print(int copies) {
-		CheckCopies(copies);
 
 		String onStatus = "";
 
@@ -62,9 +61,9 @@ public class Printer<T extends ICartridge> implements IMachine {
 	private String getTextFromFile() {
 		FileReader reader = null;
 		BufferedReader br;
-		
+
 		CapitalizationReader capReader = null;
-		
+
 		String allText = "";
 
 		try {
@@ -97,7 +96,7 @@ public class Printer<T extends ICartridge> implements IMachine {
 	}
 
 	public void outputPage(int pageNumber) {
-		
+
 		PrintWriter writer = null;
 
 		try {
@@ -113,12 +112,14 @@ public class Printer<T extends ICartridge> implements IMachine {
 
 	}
 
+	@SuppressWarnings("unused")
 	private void CheckCopies(int copies) {
 		if (copies < 0) {
 			throw new IllegalArgumentException("Can't print less than 0 copies");
 		}
 	}
 
+	@Deprecated
 	public void printColors() {
 		String[] colors = new String[] { "Red", "Blue", "Green", "Yellow", "Orange" };
 
