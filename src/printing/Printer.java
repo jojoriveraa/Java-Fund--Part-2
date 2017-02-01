@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
+@PrintingDevice(defaultPrintMethod = "print", defaultNumberOfCoppies = 5)
 public class Printer<T extends ICartridge> implements IMachine {
 	private String modelNumber;
 	private PaperTray paperTray = new PaperTray();
