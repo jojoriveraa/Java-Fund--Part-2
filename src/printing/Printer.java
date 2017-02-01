@@ -29,8 +29,10 @@ public class Printer<T extends ICartridge> implements IMachine {
 		machine.TurnOn();
 	}
 
-	public <U extends ICartridge> void printUsingCartridge(U cartridge, String message) {
+	public synchronized <U extends ICartridge> void printUsingCartridge(U cartridge, String message) {
+		System.out.println("Entered : " + Thread.currentThread().getId());
 		System.out.println(message);
+		System.out.println("Exited : " + Thread.currentThread().getId());
 	}
 
 	public void print(int copies) {
